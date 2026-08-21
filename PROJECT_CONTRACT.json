@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2303,
+    "production_files": 27,
+    "production_packages": 9,
+    "test_files": 9,
+    "production_functions": 132,
+    "decision_points": 350
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "ReservationBatch",
+      "ReservationItem",
+      "SeatHold",
+      "ReviewRecord",
+      "ArchiveEntry"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "validate batch identity and reservation rows",
+        "persist reservation items and active seat holds",
+        "apply reviewer policy and record decisions",
+        "publish outcome and archive eligible results"
+      ],
+      "test": "TestWorkflowOne"
+    },
+    {
+      "steps": [
+        "submit a mixed reservation batch",
+        "review every item in deterministic order",
+        "publish the partial result and failed identifiers",
+        "retain failed items for follow-up"
+      ],
+      "test": "TestWorkflow39BusinessInvariant"
+    },
+    {
+      "steps": [
+        "filter batches by theatre and performance",
+        "read item, review, and seat hold details",
+        "close the embedded database",
+        "reopen and verify persisted entities"
+      ],
+      "test": "TestPersistenceSurvivesReopen"
+    }
+  ]
+}
