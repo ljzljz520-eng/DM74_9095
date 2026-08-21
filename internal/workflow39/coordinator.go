@@ -82,6 +82,11 @@ func (c *Coordinator) markItemsCompleted(batchID, actor string) error {
 		if item.Status == domain.ItemCompleted {
 			continue
 		}
+		// Rejected items must remain rejected so they stay available for
+		// follow-up; only approved items are advanced to completed.
+		if item.Status == domain.ItemRejected {
+			continue
+		}
 		if err := c.Store.UpdateItemStatus(item.ID, domain.ItemCompleted, "notification accepted", actor); err != nil {
 			return err
 		}

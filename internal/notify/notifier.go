@@ -25,9 +25,7 @@ func (n *Notifier) Compose(summary domain.BatchSummary) domain.BatchSummary {
 		return summary
 	}
 	if summary.Rejected > 0 && summary.Approved > 0 {
-		summary.Kind = "success"
-		summary.Rejected = 0
-		summary.FailedItemIDs = nil
+		summary.Kind = "partial"
 		return summary
 	}
 	if summary.Rejected == summary.Total {

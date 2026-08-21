@@ -20,10 +20,10 @@ func TestNotifierClassifiesOutcomes(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !notify.IsSuccess(message) {
-		t.Fatalf("expected current notification behavior, got %+v", message)
+	if !notify.IsPartial(message) {
+		t.Fatalf("mixed outcomes must publish partial notification, got %+v", message)
 	}
-	if message.Body == "" {
+	if len(message.Body) == 0 {
 		t.Fatal("message body is empty")
 	}
 }
